@@ -1,0 +1,352 @@
+﻿<UserControl x:Class="NetworkService.Views.NetworkDisplayView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" 
+             xmlns:local="clr-namespace:NetworkService.Views"
+             xmlns:viewModel="clr-namespace:NetworkService.ViewModel"
+             xmlns:data="clr-namespace:NetworkService.Model"
+             xmlns:vml="clr-namespace:NetworkService.VML"
+             vml:ViewModelLocator.AutoHookedUpViewModel="True"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="800" Focusable="True" x:Name="mainUserControl">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded" >
+            <i:InvokeCommandAction Command="{Binding UCLoadedCommand}" CommandParameter="{Binding ElementName=mainUserControl}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <UserControl.Resources>
+        <DataTemplate DataType="{x:Type data:Entity}">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding Path=Name, Mode=TwoWay}" Width="50"/>
+                <TextBlock Text="{Binding Path=Id, Mode=TwoWay}" Width="50" />
+            </StackPanel>
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid x:Name="mainGrid">
+        <Label Background="White" Height="50" Content="Network Display" FontSize="30" FontWeight="Bold" Foreground="Black" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="10,10,10,540"/>
+        <ListBox x:Name="entityListBox" ItemsSource="{Binding EntityList}" HorizontalAlignment="Left" Margin="600,88,0,0" Width="150" AllowDrop="True" Height="400" VerticalAlignment="Top">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectionChanged" >
+                    <i:InvokeCommandAction Command="{Binding SelectionChangedCommand}" CommandParameter="{Binding ElementName=entityListBox}"/>
+                </i:EventTrigger>
+                <i:EventTrigger EventName="MouseLeftButtonUp" >
+                    <i:InvokeCommandAction Command="{Binding MouseLeftButtonUpCommand}" />
+                </i:EventTrigger>
+                <i:EventTrigger EventName="Drop" >
+                    <i:InvokeCommandAction Command="{Binding ListBoxDropCommand}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </ListBox>
+        <Canvas x:Name="mainCanvas" Height="400" Width="400" Margin="0,88,341,112" Background="White" HorizontalAlignment="Right">
+            <Border BorderBrush="Black" BorderThickness="1">
+                <Canvas x:Name="canvas1" Background="GhostWhite" Width="100" Height="100" AllowDrop="True">
+                    <TextBlock Width="100" Canvas.Top="84" TextAlignment="Center" />
+                    <ListBox Visibility="Hidden" />
+                    <TextBlock Width="100" Canvas.Top="0" Foreground="Red" FontWeight="Bold" TextAlignment="Center" />
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseLeftButtonDown" >
+                            <i:InvokeCommandAction Command="{Binding MouseLeftButtonDownCommand}" CommandParameter="{Binding ElementName=canvas1}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="MouseLeftButtonUp" >
+                            <i:InvokeCommandAction Command="{Binding MouseLeftButtonUpCommand}" CommandParameter="{Binding ElementName=canvas1}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="Drop" >
+                            <i:InvokeCommandAction Command="{Binding CanvasDropCommand}" CommandParameter="{Binding ElementName=canvas1}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Canvas>
+            </Border>
+            <Border Canvas.Left="100" Canvas.Top="0" BorderBrush="Black" BorderThickness="1">
+                <Canvas x:Name="canvas2" Background="GhostWhite" Width="100" Height="100" AllowDrop="True" Canvas.Left="100" Canvas.Top="0">
+                    <TextBlock Width="100" Canvas.Top="84" TextAlignment="Center" />
+                    <ListBox Visibility="Hidden" />
+                    <TextBlock Width="100" Canvas.Top="0" Foreground="Red" FontWeight="Bold" TextAlignment="Center" />
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseLeftButtonDown" >
+                            <i:InvokeCommandAction Command="{Binding MouseLeftButtonDownCommand}" CommandParameter="{Binding ElementName=canvas2}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="MouseLeftButtonUp" >
+                            <i:InvokeCommandAction Command="{Binding MouseLeftButtonUpCommand}" CommandParameter="{Binding ElementName=canvas2}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="Drop" >
+                            <i:InvokeCommandAction Command="{Binding CanvasDropCommand}" CommandParameter="{Binding ElementName=canvas2}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Canvas>
+            </Border>
+            <Border Canvas.Left="200" BorderBrush="Black" BorderThickness="1">
+                <Canvas x:Name="canvas3" Background="GhostWhite" Width="100" Height="100" AllowDrop="True" Canvas.Left="200">
+                    <TextBlock Width="100" Canvas.Top="84" TextAlignment="Center" />
+                    <ListBox Visibility="Hidden" />
+                    <TextBlock Width="100" Canvas.Top="0" Foreground="Red" FontWeight="Bold" TextAlignment="Center" />
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseLeftButtonDown" >
+                            <i:InvokeCommandAction Command="{Binding MouseLeftButtonDownCommand}" CommandParameter="{Binding ElementName=canvas3}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="MouseLeftButtonUp" >
+                            <i:InvokeCommandAction Command="{Binding MouseLeftButtonUpCommand}" CommandParameter="{Binding ElementName=canvas3}" />
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="Drop" >
+                            <i:InvokeCommandAction Command="{Binding CanvasDropCommand}" CommandParameter="{Binding ElementName=canvas3}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Canvas>
+            </Border>
+            <Border Canvas.Left="300" BorderBrush="Black" BorderThickness="1">
+                <Canvas x:Name="canvas4" Background="GhostWhite" Width="100" Height="100" AllowDrop="True" Canvas.Left="300" Canvas.Top="0">
+                    <TextBlock Width="100" Canvas.Top="84" TextAlignment="Center" />
+                    <ListBox Visibility="Hidden" />
+                    <TextBlock Width="100" Canvas.Top="0" Foreground="Red" FontWeight="Bold" TextAlignment="Center" />
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseLeftButtonDown" >
+                            <i:InvokeCommandAction Command="{Binding MouseLeftButtonDownCommand}" CommandParameter="{Binding ElementName=canvas4}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="MouseLeftButtonUp" >
+                            <i:InvokeCommandAction Command="{Binding MouseLeftButtonUpCommand}" CommandParameter="{Binding ElementName=canvas4}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="Drop" >
+                            <i:InvokeCommandAction Command="{Binding CanvasDropCommand}" CommandParameter="{Binding ElementName=canvas4}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Canvas>
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="1" Canvas.Top="100">
+                <Canvas x:Name="canvas5" Background="GhostWhite" Width="100" Height="100" AllowDrop="True" Canvas.Top="100">
+                    <TextBlock Width="100" Canvas.Top="84" TextAlignment="Center" />
+                    <ListBox Visibility="Hidden" />
+                    <TextBlock Width="100" Canvas.Top="0" Foreground="Red" FontWeight="Bold" TextAlignment="Center" />
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseLeftButtonDown" >
+                            <i:InvokeCommandAction Command="{Binding MouseLeftButtonDownCommand}" CommandParameter="{Binding ElementName=canvas5}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="MouseLeftButtonUp" >
+                            <i:InvokeCommandAction Command="{Binding MouseLeftButtonUpCommand}" CommandParameter="{Binding ElementName=canvas5}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="Drop" >
+                            <i:InvokeCommandAction Command="{Binding CanvasDropCommand}" CommandParameter="{Binding ElementName=canvas5}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Canvas>
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="1" Canvas.Left="100" Canvas.Top="100">
+                <Canvas x:Name="canvas6" Background="GhostWhite" Width="100" Height="100" AllowDrop="True" Canvas.Left="100" Canvas.Top="100">
+                    <TextBlock Width="100" Canvas.Top="84" TextAlignment="Center" />
+                    <ListBox Visibility="Hidden" />
+                    <TextBlock Width="100" Canvas.Top="0" Foreground="Red" FontWeight="Bold" TextAlignment="Center" />
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseLeftButtonDown" >
+                            <i:InvokeCommandAction Command="{Binding MouseLeftButtonDownCommand}" CommandParameter="{Binding ElementName=canvas6}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="MouseLeftButtonUp" >
+                            <i:InvokeCommandAction Command="{Binding MouseLeftButtonUpCommand}" CommandParameter="{Binding ElementName=canvas6}" />
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="Drop" >
+                            <i:InvokeCommandAction Command="{Binding CanvasDropCommand}" CommandParameter="{Binding ElementName=canvas6}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Canvas>
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="1" Canvas.Left="200" Canvas.Top="100">
+                <Canvas x:Name="canvas7" Background="GhostWhite" Width="100" Height="100" AllowDrop="True" Canvas.Left="200" Canvas.Top="100">
+                    <TextBlock Width="100" Canvas.Top="84" TextAlignment="Center" />
+                    <ListBox Visibility="Hidden" />
+                    <TextBlock Width="100" Canvas.Top="0" Foreground="Red" FontWeight="Bold" TextAlignment="Center" />
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseLeftButtonDown" >
+                            <i:InvokeCommandAction Command="{Binding MouseLeftButtonDownCommand}" CommandParameter="{Binding ElementName=canvas7}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="MouseLeftButtonUp" >
+                            <i:InvokeCommandAction Command="{Binding MouseLeftButtonUpCommand}" CommandParameter="{Binding ElementName=canvas7}" />
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="Drop" >
+                            <i:InvokeCommandAction Command="{Binding CanvasDropCommand}" CommandParameter="{Binding ElementName=canvas7}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Canvas>
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="1" Canvas.Left="300" Canvas.Top="100">
+                <Canvas x:Name="canvas8" Background="GhostWhite" Width="100" Height="100" AllowDrop="True" Canvas.Left="300" Canvas.Top="100">
+                    <TextBlock Width="100" Canvas.Top="84" TextAlignment="Center" />
+                    <ListBox Visibility="Hidden" />
+                    <TextBlock Width="100" Canvas.Top="0" Foreground="Red" FontWeight="Bold" TextAlignment="Center" />
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseLeftButtonDown" >
+                            <i:InvokeCommandAction Command="{Binding MouseLeftButtonDownCommand}" CommandParameter="{Binding ElementName=canvas8}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="MouseLeftButtonUp" >
+                            <i:InvokeCommandAction Command="{Binding MouseLeftButtonUpCommand}" CommandParameter="{Binding ElementName=canvas8}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="Drop" >
+                            <i:InvokeCommandAction Command="{Binding CanvasDropCommand}" CommandParameter="{Binding ElementName=canvas8}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Canvas>
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="1" Canvas.Top="200">
+                <Canvas x:Name="canvas9" Background="GhostWhite" Width="100" Height="100" AllowDrop="True" Canvas.Top="200">
+                    <TextBlock Width="100" Canvas.Top="84" TextAlignment="Center" />
+                    <ListBox Visibility="Hidden" />
+                    <TextBlock Width="100" Canvas.Top="0" Foreground="Red" FontWeight="Bold" TextAlignment="Center" />
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseLeftButtonDown" >
+                            <i:InvokeCommandAction Command="{Binding MouseLeftButtonDownCommand}" CommandParameter="{Binding ElementName=canvas9}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="MouseLeftButtonUp" >
+                            <i:InvokeCommandAction Command="{Binding MouseLeftButtonUpCommand}" CommandParameter="{Binding ElementName=canvas9}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="Drop" >
+                            <i:InvokeCommandAction Command="{Binding CanvasDropCommand}" CommandParameter="{Binding ElementName=canvas9}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Canvas>
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="1" Canvas.Left="100" Canvas.Top="200">
+                <Canvas x:Name="canvas10" Background="GhostWhite" Width="100" Height="100" AllowDrop="True" Canvas.Left="100" Canvas.Top="200">
+                    <TextBlock Width="100" Canvas.Top="84" TextAlignment="Center" />
+                    <ListBox Visibility="Hidden" />
+                    <TextBlock Width="100" Canvas.Top="0" Foreground="Red" FontWeight="Bold" TextAlignment="Center" />
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseLeftButtonDown" >
+                            <i:InvokeCommandAction Command="{Binding MouseLeftButtonDownCommand}" CommandParameter="{Binding ElementName=canvas10}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="MouseLeftButtonUp" >
+                            <i:InvokeCommandAction Command="{Binding MouseLeftButtonUpCommand}" CommandParameter="{Binding ElementName=canvas10}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="Drop" >
+                            <i:InvokeCommandAction Command="{Binding CanvasDropCommand}" CommandParameter="{Binding ElementName=canvas10}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Canvas>
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="1" Canvas.Left="200" Canvas.Top="200">
+                <Canvas x:Name="canvas11" Background="GhostWhite" Width="100" Height="100" AllowDrop="True" Canvas.Left="200" Canvas.Top="200">
+                    <TextBlock Width="100" Canvas.Top="84" TextAlignment="Center" />
+                    <ListBox Visibility="Hidden" />
+                    <TextBlock Width="100" Canvas.Top="0" Foreground="Red" FontWeight="Bold" TextAlignment="Center" />
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseLeftButtonDown" >
+                            <i:InvokeCommandAction Command="{Binding MouseLeftButtonDownCommand}" CommandParameter="{Binding ElementName=canvas11}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="MouseLeftButtonUp" >
+                            <i:InvokeCommandAction Command="{Binding MouseLeftButtonUpCommand}" CommandParameter="{Binding ElementName=canvas11}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="Drop" >
+                            <i:InvokeCommandAction Command="{Binding CanvasDropCommand}" CommandParameter="{Binding ElementName=canvas11}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Canvas>
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="1" Canvas.Left="300" Canvas.Top="200">
+                <Canvas x:Name="canvas12" Background="GhostWhite" Width="100" Height="100" AllowDrop="True" Canvas.Left="300" Canvas.Top="200">
+                    <TextBlock Width="100" Canvas.Top="84" TextAlignment="Center" />
+                    <ListBox Visibility="Hidden" />
+                    <TextBlock Width="100" Canvas.Top="0" Foreground="Red" FontWeight="Bold" TextAlignment="Center" />
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseLeftButtonDown" >
+                            <i:InvokeCommandAction Command="{Binding MouseLeftButtonDownCommand}" CommandParameter="{Binding ElementName=canvas12}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="MouseLeftButtonUp" >
+                            <i:InvokeCommandAction Command="{Binding MouseLeftButtonUpCommand}" CommandParameter="{Binding ElementName=canvas12}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="Drop" >
+                            <i:InvokeCommandAction Command="{Binding CanvasDropCommand}" CommandParameter="{Binding ElementName=canvas12}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Canvas>
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="1" Canvas.Top="300">
+                <Canvas x:Name="canvas13" Background="GhostWhite" Width="100" Height="100" AllowDrop="True" Canvas.Top="300">
+                    <TextBlock Width="100" Canvas.Top="84" TextAlignment="Center" />
+                    <ListBox Visibility="Hidden" />
+                    <TextBlock Width="100" Canvas.Top="0" Foreground="Red" FontWeight="Bold" TextAlignment="Center" />
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseLeftButtonDown" >
+                            <i:InvokeCommandAction Command="{Binding MouseLeftButtonDownCommand}" CommandParameter="{Binding ElementName=canvas13}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="MouseLeftButtonUp" >
+                            <i:InvokeCommandAction Command="{Binding MouseLeftButtonUpCommand}" CommandParameter="{Binding ElementName=canvas13}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="Drop" >
+                            <i:InvokeCommandAction Command="{Binding CanvasDropCommand}" CommandParameter="{Binding ElementName=canvas13}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Canvas>
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="1" Canvas.Left="100" Canvas.Top="300">
+                <Canvas x:Name="canvas14" Background="GhostWhite" Width="100" Height="100" AllowDrop="True" Canvas.Left="100" Canvas.Top="300">
+                    <TextBlock Width="100" Canvas.Top="84" TextAlignment="Center" />
+                    <ListBox Visibility="Hidden" />
+                    <TextBlock Width="100" Canvas.Top="0" Foreground="Red" FontWeight="Bold" TextAlignment="Center" />
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseLeftButtonDown" >
+                            <i:InvokeCommandAction Command="{Binding MouseLeftButtonDownCommand}" CommandParameter="{Binding ElementName=canvas14}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="MouseLeftButtonUp" >
+                            <i:InvokeCommandAction Command="{Binding MouseLeftButtonUpCommand}" CommandParameter="{Binding ElementName=canvas14}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="Drop" >
+                            <i:InvokeCommandAction Command="{Binding CanvasDropCommand}" CommandParameter="{Binding ElementName=canvas14}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Canvas>
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="1" Canvas.Left="200" Canvas.Top="300">
+                <Canvas x:Name="canvas15" Background="GhostWhite" Width="100" Height="100" AllowDrop="True" Canvas.Left="200" Canvas.Top="300">
+                    <TextBlock Width="100" Canvas.Top="84" TextAlignment="Center" />
+                    <ListBox Visibility="Hidden" />
+                    <TextBlock Width="100" Canvas.Top="0" Foreground="Red" FontWeight="Bold" TextAlignment="Center" />
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseLeftButtonDown" >
+                            <i:InvokeCommandAction Command="{Binding MouseLeftButtonDownCommand}" CommandParameter="{Binding ElementName=canvas15}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="MouseLeftButtonUp" >
+                            <i:InvokeCommandAction Command="{Binding MouseLeftButtonUpCommand}" CommandParameter="{Binding ElementName=canvas15}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="Drop" >
+                            <i:InvokeCommandAction Command="{Binding CanvasDropCommand}" CommandParameter="{Binding ElementName=canvas15}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Canvas>
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="1" Canvas.Left="300" Canvas.Top="300">
+                <Canvas x:Name="canvas16" Background="GhostWhite" Width="100" Height="100" AllowDrop="True" Canvas.Left="300" Canvas.Top="300">
+                    <TextBlock Width="100" Canvas.Top="84" TextAlignment="Center" />
+                    <ListBox Visibility="Hidden" />
+                    <TextBlock Width="100" Canvas.Top="0" Foreground="Red" FontWeight="Bold" TextAlignment="Center" />
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseLeftButtonDown" >
+                            <i:InvokeCommandAction Command="{Binding MouseLeftButtonDownCommand}" CommandParameter="{Binding ElementName=canvas16}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="MouseLeftButtonUp" >
+                            <i:InvokeCommandAction Command="{Binding MouseLeftButtonUpCommand}" CommandParameter="{Binding ElementName=canvas16}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="Drop" >
+                            <i:InvokeCommandAction Command="{Binding CanvasDropCommand}" CommandParameter="{Binding ElementName=canvas16}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Canvas>
+            </Border>
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="Loaded" >
+                    <i:InvokeCommandAction Command="{Binding LoadedCommand}" CommandParameter="{Binding ElementName=mainCanvas}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Canvas>
+        <Button Content="AUTO PLACE ENTITIES" Command="{Binding AutoPlaceEntitiesCommand}" CommandParameter="{Binding ElementName=mainCanvas}" FontSize="14" Background="White" BorderBrush="Black" BorderThickness="2" HorizontalAlignment="Left" Margin="600,508,0,0" VerticalAlignment="Top" Width="150" Height="30"/>
+        <ToggleButton Content="CONNECT" FontSize="18" FontWeight="Bold" x:Name="connectToggleButton" Command="{Binding ConnectCommand}" CommandParameter="{Binding ElementName=connectToggleButton}" Background="White" Margin="0,509,341,62" HorizontalAlignment="Right" Width="400" BorderBrush="Black" BorderThickness="2" />
+        <TextBox HorizontalAlignment="Left" Visibility="Hidden" Text="{Binding UpdateText, Mode=TwoWay}" Height="9" Margin="0,567,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="42">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="TextChanged" >
+                    <i:InvokeCommandAction Command="{Binding TextChangedCommand}" CommandParameter="{Binding ElementName=mainCanvas}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </TextBox>
+        <i:Interaction.Triggers>
+            <i:EventTrigger EventName="Loaded" >
+                <i:InvokeCommandAction Command="{Binding GridLoadedCommand}" CommandParameter="{Binding ElementName=mainGrid}"/>
+            </i:EventTrigger>
+        </i:Interaction.Triggers>
+    </Grid>
+</UserControl>
